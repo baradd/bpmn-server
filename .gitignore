@@ -1,0 +1,24 @@
+﻿/node_modules
+/obj
+*.log
+*.cmd
+*.sln
+*.njsproj
+*.njsproj.user
+*.txt
+/bin
+/webApp/node_modules
+/webApp/obj
+/webApp/bin
+*.log
+*.cmd
+*.sln
+*.njsproj
+*.njsproj.user
+*.txt
+/bin
+# Output of 'npm pack'
+*.tgz
+# Transpiled JavaScript files from Typescript
+/dist
+
