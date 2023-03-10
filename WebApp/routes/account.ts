@@ -1,4 +1,4 @@
-import { Common} from "./common";
+import { Common } from "./common";
 
 const express = require('express');
 
@@ -12,7 +12,7 @@ const upload = multer({ dest: path.join(__dirname, 'uploads') });
  */
 const userController = require('../controllers/user').UserController;
 
-export class Account extends Common{
+export class Account extends Common {
 
 	config() {
 		var router = express.Router();
@@ -104,5 +104,5 @@ export class Account extends Common{
 
 		return router;
 
-    }
+	}
 }
