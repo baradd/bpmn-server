@@ -211,13 +211,15 @@ export class WebApp {
 
 
 		var Workflow = require("./routes/index").Workflow;
-		//NOPASSPORT var Account = require("./routes/account").Account;
+		// NOPASSPORT
+		var Account = require("./routes/account").Account;
 		var Docs = require("./routes/docs").Docs;
 		var Model = require("./routes/model").Model;
 		var API = require("./routes/api").API;
 
 		this.app.use('/', (new Workflow(this)).config());
-		//NOPASSPORT 		this.app.use('/', (new Account(this)).config());
+		//NOPASSPORT 		
+		this.app.use('/', (new Account(this)).config());
 		this.app.use('/docs', (new Docs(this)).config());
 		this.app.use('/model', (new Model(this)).config());
 		this.app.use('/api', (new API(this)).config());
