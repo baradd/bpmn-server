@@ -2,7 +2,7 @@ import express = require('express');
 
 const FS = require('fs');
 
-import { BPMNServer, dateDiff, Behaviour_names   } from '../';
+import { BPMNServer, dateDiff, Behaviour_names } from '../';
 import { Common } from './common';
 
 
@@ -14,10 +14,10 @@ const docsFolder = __dirname + '/../bpmnServer/docs/';
 
 // main functions
 
-function awaitAppDelegateFactory (middleware) {
+function awaitAppDelegateFactory(middleware) {
     return async (req, res, next) => {
         try {
-            if (req.query.userId && typeof (req.query.userId) !=='undefined' && req.query.userId !=='undefined') {
+            if (req.query.userId && typeof (req.query.userId) !== 'undefined' && req.query.userId !== 'undefined') {
                 req.session.userId = req.query.userId;
             }
             else if (!req.session.userId)
@@ -44,9 +44,10 @@ export class Workflow extends Common {
 
         router.get('/home', home);
         router.get('/', awaitAppDelegateFactory(async (request, response) => {
+
             let output = [];
             output = show(output);
-		//NOPASSPORT             console.log("isAuthenticated", request.isAuthenticated(), 'user', request.user);
+            //NOPASSPORT             console.log("isAuthenticated", request.isAuthenticated(), 'user', request.user);
 
             if (request.session.views) {
                 request.session.views++
@@ -57,7 +58,7 @@ export class Workflow extends Common {
 
             userId = request.session.userId;
 
-            display(request,response, 'Show', output);
+            display(request, response, 'Show', output);
         }));
 
 
@@ -153,7 +154,7 @@ export class Workflow extends Common {
         router.get('/listDefinitions', function (req, res) {
             let output = ['Data Reset'];
             output = show(output);
-            display(req,res, 'Show', output);
+            display(req, res, 'Show', output);
 
         });
 
@@ -161,20 +162,20 @@ export class Workflow extends Common {
             await bpmnServer.dataStore.deleteInstances();
             let output = ['Data Reset'];
             output = show(output);
-            display(request,response, 'Show', output);
+            display(request, response, 'Show', output);
         }));
 
         router.get('/refresh', function (req, res) {
             let output = [];
             output = show(output);
-            display(req,res, 'Show', output);
+            display(req, res, 'Show', output);
         });
 
         router.get('/clearDebug', function (req, res) {
             //    Logger.clear();
             let output = [];
             output = show(output);
-            display(req,res, 'Show', output);
+            display(req, res, 'Show', output);
         });
 
         router.get('/invokeItem', awaitAppDelegateFactory(async (request, response) => {
@@ -205,7 +206,7 @@ export class Workflow extends Common {
         router.post('/invokeItem', awaitAppDelegateFactory(async (request, response) => {
             let id = request.body.itemId;
             let data = {};
-            
+
             Object.entries(request.body).forEach(entry => {
                 if (entry[0] == 'itemId') { }
                 else {
@@ -242,7 +243,7 @@ export class Workflow extends Common {
 
             let output = ['run ' + process];
             output = show(output);
-            display(request,response, 'Run Prcesses', output, exec.instance.logs, exec.instance.items);
+            display(request, response, 'Run Prcesses', output, exec.instance.logs, exec.instance.items);
         }));
         router.get('/instanceDetails', awaitAppDelegateFactory(async (request, response) => {
 
@@ -260,20 +261,20 @@ export class Workflow extends Common {
 }
 
 
-async function home(request, response)  {
-        let output = [];
-        output = show(output);
+async function home(request, response) {
+    let output = [];
+    output = show(output);
 
-        if (request.session.views) {
-            request.session.views++
-        } else {
-            request.session.views = 1
-        }
-        console.log('Session:', request.session);
+    if (request.session.views) {
+        request.session.views++
+    } else {
+        request.session.views = 1
+    }
+    console.log('Session:', request.session);
 
 
 
-        display(request,response, 'Show', output);
+    display(request, response, 'Show', output);
 }
 
 async function deleteInstance(req, res) {
@@ -283,7 +284,7 @@ async function deleteInstance(req, res) {
     await bpmnServer.dataStore.deleteInstances({ id: instanceId });
 
     let output = ['Complete ' + instanceId];
-    display(req,res, 'Show', output);
+    display(req, res, 'Show', output);
 }
 async function shutdown(req, res) {
 
@@ -292,7 +293,7 @@ async function shutdown(req, res) {
     await bpmnServer.cache.shutdown();
 
     let output = ['Complete ' + instanceId];
-    display(req,res, 'Show', output);
+    display(req, res, 'Show', output);
 }
 async function restart(req, res) {
 
@@ -301,7 +302,7 @@ async function restart(req, res) {
     await bpmnServer.cache.restart();
 
     let output = ['Complete ' + instanceId];
-    display(req,res, 'Show', output);
+    display(req, res, 'Show', output);
 }
 async function manage(req, res) {
     res.render('manageProcesses',
@@ -318,7 +319,7 @@ async function displayError(res, error) {
 
     if (typeof error === 'object') {
         if (error.message) {
-//            msg += error.message;
+            //            msg += error.message;
             msg += '<br/>Error Message: ' + error.message;
         }
         if (error.stack) {
@@ -327,15 +328,15 @@ async function displayError(res, error) {
             msg += error.stack.split('\n').join('<br/>');
         }
     } else {
-        msg +=error;
+        msg += error;
     }
     res.send(msg);
 
 }
-async function display(req,res, title, output, logs = [], items = []) {
+async function display(req, res, title, output, logs = [], items = []) {
 
-    var instances = await bpmnServer.dataStore.findInstances({},'summary');
-    let waiting = await bpmnServer.dataStore.findItems({"items.status": 'wait' }); 
+    var instances = await bpmnServer.dataStore.findInstances({}, 'summary');
+    let waiting = await bpmnServer.dataStore.findItems({ "items.status": 'wait' });
 
     waiting.forEach(item => {
         item.fromNow = dateDiff(item.startedAt);
@@ -344,9 +345,9 @@ async function display(req,res, title, output, logs = [], items = []) {
     let engines = bpmnServer.cache.list();
 
     engines.forEach(engine => {
-        engine.fromNow = dateDiff(engine.startedAt); 
-        engine.fromLast = dateDiff(engine.lastAt); 
-        });
+        engine.fromNow = dateDiff(engine.startedAt);
+        engine.fromLast = dateDiff(engine.lastAt);
+    });
 
     instances.forEach(item => {
         item.fromNow = dateDiff(item.startedAt);
@@ -373,8 +374,8 @@ async function display(req,res, title, output, logs = [], items = []) {
 function show(output) {
     return output;
 }
-async function instanceDetails(response,instanceId) {
-    let instance = await bpmnServer.dataStore.findInstance({ id: instanceId },'Full');
+async function instanceDetails(response, instanceId) {
+    let instance = await bpmnServer.dataStore.findInstance({ id: instanceId }, 'Full');
 
 
     let logs = instance.logs;
@@ -398,11 +399,11 @@ async function instanceDetails(response,instanceId) {
     let vars = [];
     Object.keys(instance.data).forEach(function (key) {
         let value = instance.data[key];
-        if (Array.isArray(value)) 
+        if (Array.isArray(value))
             value = JSON.stringify(value);
         if (typeof value === 'object' && value !== null)
             value = JSON.stringify(value);
-        
+
         vars.push({ key, value });
     });
 
@@ -413,7 +414,7 @@ async function instanceDetails(response,instanceId) {
             instance, vars,
             accessRules: def.accessRules,
             title: 'Instance Details',
-            logs,items: instance.items, svg,
+            logs, items: instance.items, svg,
             decorations, definition: defJson, lastItem,
         });
 

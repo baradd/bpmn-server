@@ -43,6 +43,7 @@ class Workflow extends common_1.Common {
         definitions = bpmnServer.definitions;
         router.get('/home', home);
         router.get('/', awaitAppDelegateFactory((request, response) => __awaiter(this, void 0, void 0, function* () {
+            console.log("IHi");
             let output = [];
             output = show(output);
             //NOPASSPORT             console.log("isAuthenticated", request.isAuthenticated(), 'user', request.user);
@@ -272,17 +273,17 @@ function display(req, res, title, output, logs = [], items = []) {
         var instances = yield bpmnServer.dataStore.findInstances({}, 'summary');
         let waiting = yield bpmnServer.dataStore.findItems({ "items.status": 'wait' });
         waiting.forEach(item => {
-            item.fromNow = __1.dateDiff(item.startedAt);
+            item.fromNow = (0, __1.dateDiff)(item.startedAt);
         });
         let engines = bpmnServer.cache.list();
         engines.forEach(engine => {
-            engine.fromNow = __1.dateDiff(engine.startedAt);
-            engine.fromLast = __1.dateDiff(engine.lastAt);
+            engine.fromNow = (0, __1.dateDiff)(engine.startedAt);
+            engine.fromLast = (0, __1.dateDiff)(engine.lastAt);
         });
         instances.forEach(item => {
-            item.fromNow = __1.dateDiff(item.startedAt);
+            item.fromNow = (0, __1.dateDiff)(item.startedAt);
             if (item.endedAt)
-                item.endFromNow = __1.dateDiff(item.endedAt);
+                item.endFromNow = (0, __1.dateDiff)(item.endedAt);
             else
                 item.endFromNow = '';
         });
